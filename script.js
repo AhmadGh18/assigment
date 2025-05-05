@@ -32,102 +32,112 @@ const movies = [
     year: 1999,
     rating: 8.8,
     genre: ["Drama"],
-    director: "David Fincher",
+    director: "David Fincher",
   },
 ];
 
-// 1. Array of movie titles
-const titles = movies.map((m) => m.title);
+//1 - Create an array of movie titles.
+const titles = movies.map((movie) => movie.title);
+console.log(titles);
 
-// 2. Movies with rating > 8.5
-const highRated = movies.filter((m) => m.rating > 8.5);
+const moviesHigher_5_8 = movies.filter((movie) => movie.rating > 8.5);
+console.log(moviesHigher_5_8);
 
-// 3. Movies sorted by rating (desc)
-const sortedByRating = [...movies].sort((a, b) => b.rating - a.rating);
+//3 - Sort the movies by rating in decending order.
+const sorted_movies = movies.sort((a, b) => b.rating - a.rating);
+console.log(sorted_movies);
 
-// 4. Movies released after 2000
-const post2000 = movies.filter((m) => m.year > 2000);
+//4 - Create an array of movies released after  2000.
+const moviesAfter_2000 = movies.filter((movie) => movie.year > 2000);
+console.log(moviesAfter_2000);
 
-// 5. Movies sorted by year (asc)
-const sortedByYear = [...movies].sort((a, b) => a.year - b.year);
+//5 - Sort the movies asc
+const sortedMovies = movies.sort((a, b) => a.year - b.year);
+console.log(sortedMovies);
 
-// 6. Genre count
-const genreCount = {};
-movies.forEach((m) =>
-  m.genre.forEach((g) => (genreCount[g] = (genreCount[g] || 0) + 1))
-);
+//6 - Create an object that counts the number of movies of each genre.
+const genreCount = movies.reduce((acc, movie) => {
+  movie.genre.forEach((genre) => {
+    acc[genre] = (acc[genre] || 0) + 1;
+  });
+  return acc;
+}, {});
+console.log(genreCount);
 
-// 7. All movies rating > 7
-const allAbove7 = movies.every((m) => m.rating > 7);
+//7 - Check if all movies have a rating higher than 7.
+const higherthan7 = movies.every((movie) => movie.rating > 7);
+console.log("Are all movies rated >7", higherthan7);
 
-// 8. Average rating
-const avgRating = movies.reduce((sum, m) => sum + m.rating, 0) / movies.length;
+const avgrating =
+  movies.reduce((acc, movie) => acc + movie.rating, 0) / (movies.length || 1); // || 1 just in case the array is empty
+console.log("average :", avgrating);
 
-// 9. Array with only title and rating
-const titleAndRating = movies.map((m) => ({
-  title: m.title,
-  rating: m.rating,
-}));
+const title_Rating = movies.map((movie) => {
+  return { title: movie.title, rating: movie.rating };
+});
+console.log(title_Rating);
 
-// 10. At least one Sci-Fi movie
-const hasSciFi = movies.some((m) => m.genre.includes("Sci-Fi"));
+//10 - Check if there is at least one movie in the "Sci-Fi" .
+const has_SciFi = movies.some((movie) => {
+  return movie.genre.includes("Sci-Fi");
+});
+console.log("Is there at least one movie in the Sci-Fi genre?", has_SciFi);
 
-// 11. At least one by Quentin Tarantino
-const hasTarantino = movies.some((m) =>
-  m.director.includes("Quentin Tarantino")
-);
+//11 - Check if there is at least one movie directed by "Quentin Tarantino".
+const directed_bytarantino = movies.some((movie) => {
+  return movie.director === "Quentin Tarantino";
+});
+console.log(" directed by tarantino?", directed_bytarantino);
 
-// 12. All released after 1990
-const allAfter1990 = movies.every((m) => m.year > 1990);
+//12 - Check if all movies relivesd 1990.
+const relised_movies = movies.every((movie) => {
+  movie.year > 1990;
+});
+console.log(" movies released after 1990 :", relised_movies);
 
-// 13. Nolan movies with rating > 8.5, sorted by rating (desc)
-const nolanHighRated = movies
-  .filter((m) => m.director.includes("Christopher Nolan") && m.rating > 8.5)
+//13 -  titles of all movies directed by "Christopher Nolan" having rating higher than 8.5 (DSC).
+const nolan_movies = movies
+  .filter((movie) => movie.director === "Christopher Nolan")
+  .filter((movie) => movie.rating > 8.5)
   .sort((a, b) => b.rating - a.rating)
-  .map((m) => m.title);
+  .map((movie) => movie.title);
 
-// 14. Avg rating of Drama movies before 2000
-const dramaBefore2000 = movies.filter(
-  (m) => m.year < 2000 && m.genre.includes("Drama")
-);
-const avgDramaBefore2000 =
-  dramaBefore2000.reduce((sum, m) => sum + m.rating, 0) /
-  dramaBefore2000.length;
+console.log("Nolan special movies:", nolan_movies);
 
-// 15. Titles of movies with rating > 8.5, sorted by year
-const highRatedTitlesByYear = movies
-  .filter((m) => m.rating > 8.5)
+//14 - Calculate the average rating of drama movies released before the year 2000.
+const avgDrama_bg200 =
+  movies
+    .filter((movie) => movie.year < 2000)
+    .filter((movie) => movie.genre.includes("Drama"))
+    .reduce((acc, movie) => acc + movie.rating, 0) / movies.length || 1; // || 1 just in case the array is empty
+console.log("average rating of drama movies before 2000:", avgDrama_bg200);
+
+//15 - Create an array of movie titles for movies with a rating higher than 8.5, sorted by their release year.
+const hotTitles_sortedByYear = movies
+  .filter((movie) => movie.rating > 8.5)
   .sort((a, b) => a.year - b.year)
-  .map((m) => m.title);
+  .map((movie) => movie.title);
+console.log(hotTitles_sortedByYear);
 
-// 16. Total genres of movies with rating > 8.8
-const genresAbove88 = new Set(
-  movies.filter((m) => m.rating > 8.8).flatMap((m) => m.genre)
-);
-const totalGenresAbove88 = genresAbove88.size;
+//16 - Find the number of genres covered by movies with a rating higher than 8.8
+const Hot_moviesgnr = movies
+  .filter((movie) => movie.rating > 8.8)
+  .map((movie) => movie.genre)
+  .reduce((acc, genres) => acc.concat(genres), [])
+  .reduce((uniqueGenres, genre) => {
+    return uniqueGenres.includes(genre)
+      ? uniqueGenres
+      : uniqueGenres.concat(genre);
+  }, []).length;
+console.log("number of genres  hot movies", Hot_moviesgnr);
 
-// 17. At least one movie with rating > 9
-const hasAbove9 = movies.some((m) => m.rating > 9);
+//17 - is at least one movie is rated > 9.
+const goatedMovie = movies.some((movie) => movie.rating > 9);
+console.log("is there a  movie >9?", goatedMovie);
 
-// 18. All Christopher Nolan movies rating > 8.5
-const allNolanAbove85 = movies
-  .filter((m) => m.director.includes("Christopher Nolan"))
-  .every((m) => m.rating > 8.5);
-console.log("titles:", titles);
-console.log("highRated:", highRated);
-console.log("sortedByRating:", sortedByRating);
-console.log("post2000:", post2000);
-console.log("sortedByYear:", sortedByYear);
-console.log("genreCount:", genreCount);
-console.log("allAbove7:", allAbove7);
-console.log("avgRating:", avgRating);
-console.log("titleAndRating:", titleAndRating);
-console.log("hasSciFi:", hasSciFi);
-console.log("hasTarantino:", hasTarantino);
-console.log("allAfter1990:", allAfter1990);
-console.log("nolanHighRated:", nolanHighRated);
-console.log("avgDramaBefore2000:", avgDramaBefore2000);
-console.log("highRatedTitlesByYear:", highRatedTitlesByYear);
-console.log("totalGenresAbove88:", totalGenresAbove88);
-console.log("hasAbove9:", hasAbove9);
-console.log("allNolanAbove85:", allNolanAbove85);
+//18 - check if all movies directed by "Christopher nolan" have a rating higher than 8.5
+
+const areAllNolanMovieGood = movies
+  .filter((movie) => movie.director === "Christopher Nolan")
+  .every((movie) => movie.rating > 8.5);
+console.log("are all Nolan movies rated >8.5", areAllNolanMovieGood);
