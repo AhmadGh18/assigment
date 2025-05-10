@@ -2,12 +2,17 @@ const companies = ["apple.com", "microsoft.com", "google.com"];
 const apiKey = "1zMlVd+8qf3399cPxy3S9R5vGUFDxsMIy4PNHeamJ8U=";
 const container = document.getElementById("brandInfo");
 
-companies.forEach((domain) => {
-  fetch(`https://api.brandfetch.io/v2/brands/${domain}`, {
-    headers: { Authorization: `Bearer ${apiKey}` },
-  })
-    .then((res) => res.json())
-    .then((data) => {
+Promise.all(
+  companies.map((domain) =>
+    fetch(`https://api.brandfetch.io/v2/brands/${domain}`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+    }).then((res) => {
+      return res.json();
+    })
+  )
+)
+  .then((dataArray) => {
+    dataArray.forEach((data) => {
       const name = data.name;
       const desc = data.description;
       const founded = data.company?.foundedYear || "N/A";
@@ -40,6 +45,6 @@ companies.forEach((domain) => {
       `;
 
       container.appendChild(companyBlock);
-    })
-    .catch(console.error);
-});
+    });
+  })
+  .catch(console.error);
