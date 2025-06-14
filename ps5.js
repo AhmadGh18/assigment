@@ -38,7 +38,7 @@ class Thing {
   }
 }
 
-// Circle
+// classCircle
 class Circle extends Thing {
   move() {
     this.y += random([-2, 2]);
@@ -65,7 +65,7 @@ class Square extends Thing {
   }
 }
 
-// Triangle
+// Tclass triangles
 class Triangle extends Thing {
   move() {
     this.x += random([-2, 2]);
