@@ -1,3 +1,4 @@
+//1
 interface User {
   id: number;
   name: string;
@@ -5,6 +6,11 @@ interface User {
   email: string;
 }
 
+function handleUser(user: Partial<User>) {
+  console.log(user);
+}
+
+//2
 interface Product {
   id: number;
   name: string;
@@ -12,38 +18,44 @@ interface Product {
   price: number;
 }
 
-function selectProductFields<T extends keyof Product>(
-  product: Product,
-  keys: T[]
-): Pick<Product, T> {
-  const result = {} as Pick<Product, T>;
-  keys.forEach((key) => (result[key] = product[key]));
-  return result;
-}
+type SelectProductFields<T, K extends keyof T> = Pick<T, K>;
 
+type SomeProductFields = SelectProductFields<Product, "id" | "name">;
+
+//3
 interface Person {
   name: string;
   age: number;
   socialSecurityNumber: string;
 }
 
-type SafePerson = Omit<Person, "socialSecurityNumber">;
-
-function getSafePerson(person: Person): SafePerson {
-  const { socialSecurityNumber, ...safeData } = person;
-  return safeData;
+function getSafePerson(person: Person): Omit<Person, "socialSecurityNumber"> {
+  const { socialSecurityNumber, ...safe } = person;
+  return safe;
 }
-
+//4
 interface Config {
   apiKey: string;
   baseUrl: string;
   timeout: number;
 }
 
-type ImmutableConfig = Readonly<Config>;
-type StringNumberDictionary = { [key: string]: number };
+const config: Readonly<Config> = {
+  apiKey: "abc",
+  baseUrl: "https://example.com",
+  timeout: 3000,
+};
+
+//5
+type NumberDictionary = Record<string, number>;
+
+//6
 type AvailableColors = "red" | "green" | "blue" | "yellow";
-type ExcludedColors = Exclude<AvailableColors, "yellow" | "blue">;
-type PrimaryColors = Extract<AvailableColors, "red" | "blue">;
+type FilteredColors = Exclude<AvailableColors, "blue" | "yellow">;
+
+//7
+type SelectedColors = Extract<AvailableColors, "red" | "blue">;
+
+//8
 type Address = string | null | undefined;
-type NonNullableAddress = NonNullable<Address>;
+type CleanAddress = NonNullable<Address>;

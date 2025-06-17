@@ -1,3 +1,20 @@
-function handleUser(user) {
-    console.log(user);
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+function selectProductFields(product, keys) {
+    var result = {};
+    keys.forEach(function (key) { return (result[key] = product[key]); });
+    return result;
+}
+function getSafePerson(person) {
+    var socialSecurityNumber = person.socialSecurityNumber, safeData = __rest(person, ["socialSecurityNumber"]);
+    return safeData;
 }
